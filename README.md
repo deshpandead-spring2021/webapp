@@ -1,2 +1,1 @@
-# webapp
-This is repo for webapp for subject CSYE6225
+Making changes to readme to understand git workflow
