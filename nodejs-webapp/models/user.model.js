@@ -52,11 +52,11 @@ module.exports = (sequelize, Sequelize) => {
 
       beforeCreate: async function (user) {
         const salt = bcrypt.genSaltSync();
-        user.password = bcrypt.hashSync(user.password, salt);
+        user.password = bcrypt.hashSync(user.password, saltrounds);
       },
 
       beforeUpdate: async function (user) {
-        user.password = bcrypt.hashSync(user.password, salt);
+        user.password = bcrypt.hashSync(user.password, saltrounds);
         console.log("here in the before buld update after >>>>>>>>>>>>>>after");
 
       }
