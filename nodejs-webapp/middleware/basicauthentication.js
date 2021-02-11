@@ -33,8 +33,8 @@ else{
         ]
     })
   .then(user=>{
-    console.log("Printing user.password>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(user.password)
+    // console.log("Printing user.password>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    // console.log(user.password)
 
     var result = bcrypt.compareSync(userpassword,user.password)
 
