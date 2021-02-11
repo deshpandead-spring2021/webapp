@@ -1,4 +1,3 @@
-
 const Sequelize = require("sequelize");
 const {configuration} = require("../config/db.config.js")
 

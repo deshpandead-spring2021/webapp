@@ -4,9 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 //const basicAuth = require('./_helpers/basicauth');
 
-
-
-
 const app = express();
 
 // dotenv.config();
@@ -35,8 +32,6 @@ app.get("/", (req, res) => {
 });
 
 require('./routes/auth.routes')(app);
-
-
 
 
 // set port, listen for requests

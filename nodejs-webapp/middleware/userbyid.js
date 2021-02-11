@@ -9,7 +9,7 @@ exports.findById = (userid) => {
         return user;
       })
       .catch((err) => {
-        console.log(">> Error while finding Question: ", err);
-        // res.status(400).send("Cannot register user. Please check if you have entered correct data")
+        // console.log(">> Error while finding Question: ", err);
+         res.status(400).send("Cannot register user. Please check if you have entered correct data")
       });
   };

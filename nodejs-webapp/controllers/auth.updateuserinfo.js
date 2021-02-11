@@ -13,8 +13,8 @@ const sentusername = req.body.username
 const account_created = req.body.account_created
 const account_updated = req.body.account_updated
 
-console.log("Printing uddate password here>>>>>>>>>>>>>");
-console.log(req.body.password)
+// console.log("Printing uddate password here>>>>>>>>>>>>>");
+// console.log(req.body.password)
 
 
 console.log(loginname)
