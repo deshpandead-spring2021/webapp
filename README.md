@@ -1,4 +1,4 @@
-## This is a nodejs application built as a part of Assignment 1 for CSYE6225 Spring 20201 course. The application currently signs up a user using basic token authentication. User can signup and change his/her details afeter signing up. 
+## This is a nodejs application built as a part of Assignment 1 for CSYE6225 Spring 20201 course. The application currently signs up a user using basic token authentication. User can signup and change his/her details after signing up. 
 
 <br>
 
