@@ -17,7 +17,6 @@ console.log("loginname "+loginname)
 console.log("userpassword "+userpassword)
 
 
-
 if(loginname==="" || userpassword===""){
     res.status(400).send("Username or password fields are not filled.")
     }
@@ -60,11 +59,8 @@ else{
     res.status(400).send("Cannot register user. Please check if you have entered correct data")
   });
    
-
     }
-
 };
-
 
 
 const tokenauth = {
