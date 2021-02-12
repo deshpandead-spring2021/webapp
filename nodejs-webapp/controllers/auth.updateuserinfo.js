@@ -26,7 +26,13 @@ if(sentusername || account_created|| account_updated){
 
 else{
 
+  console.log(req.body.password);
+
    sleep(100);
+
+
+   console.log("Printing user passwor>>>>>>>>>>>>>>>>>>>>>>>");
+   console.log(req.body.password);
 
    /**
     * Update user info like firstname, lastname and password
@@ -35,14 +41,13 @@ else{
       
       first_name:req.body.first_name,
       last_name:req.body.last_name,
-      password:req.body.password,
+      password:req.body.password
+    
     },
     { 
       where: {username: loginname},
-  
-    individualHooks: true,
-  
-  },
+    },
+    
    
     )
   
