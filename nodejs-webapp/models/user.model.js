@@ -56,9 +56,11 @@ module.exports = (sequelize, Sequelize) => {
       },
 
       beforeUpdate: async function (user) {
+        console.log("Printing user password>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(user.password)
+        const salt = bcrypt.genSaltSync();
         user.password = bcrypt.hashSync(user.password, saltrounds);
-        console.log("here in the before buld update after >>>>>>>>>>>>>>after");
-
+        
       }
     },
     freezeTableName: true, // Model tableName will be the same as the model name
