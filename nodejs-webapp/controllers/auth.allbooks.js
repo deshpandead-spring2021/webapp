@@ -3,8 +3,7 @@ const sequelize = require("sequelize");
 const User = db.user;
 const Book =db.book;
 const bookbyid =  require("../middleware/bookbyid");
-const { book } = require("../models");
-const sleep = ms => new Promise(res => setTimeout(res, ms));
+
 
 
 exports.getallbooks = async (req, res) => {
@@ -15,5 +14,9 @@ const allbooks = Book.findAll({
 .then(book=>{
     res.status(200).json(book)
 })
+.catch((err) => {
+    console.log(">> Error while finding the requested book ", err);
+    res.status(400).send("Cannot find the books. Make sure the data entered is correct.")
+ });
 
 };
