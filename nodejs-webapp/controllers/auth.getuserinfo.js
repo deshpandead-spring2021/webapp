@@ -5,6 +5,8 @@ const tokenauth = require("../middleware/basicauthentication");
   // Username
 
   exports.senduserinfo = async (req,res)=>{
+
+    
     const base64Credentials =  req.headers.authorization.split(' ')[1];
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [loginname, userpassword] = credentials.split(':');

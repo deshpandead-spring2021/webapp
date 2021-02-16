@@ -1,10 +1,8 @@
 const db = require("../models");
 const User = db.user;
 const findById =  require("../middleware/userbyid")
-var bcrypt = require("bcryptjs");
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
-const saltrounds =8;
 
 
 exports.signup = async (req, res) => {

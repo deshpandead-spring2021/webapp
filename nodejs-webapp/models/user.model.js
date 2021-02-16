@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
       type:DataTypes.STRING,
        allowNull:false,
       validate:{
-        is:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/
+        is:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{9,}$/
 /**
  * Minimum nine characters, at least one uppercase letter,one lowercase letter,one number and one special character
  */
