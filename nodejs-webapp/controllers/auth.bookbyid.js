@@ -8,7 +8,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 exports.getbookid = async (req, res) => {
 
 const bookid = req.params.id
-console.log("Console log >>>>>>>>>>>>>>>>>>>>>>>>> "+ bookid)
+// console.log("Console log >>>>>>>>>>>>>>>>>>>>>>>>> "+ bookid)
 
 await sleep(100);
 

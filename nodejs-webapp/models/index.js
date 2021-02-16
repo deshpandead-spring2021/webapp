@@ -35,20 +35,7 @@ db.user = require("../models/user.model")(sequelize, Sequelize);
 db.book = require("../models/books.model")(sequelize,Sequelize);
 
 
-// db.user.belongsToMany(db.book,
-//   {
-//     as:'books',
-//   through:'books_user', 
-//   foreignKey: 'userid',
-//   otherKey:'bookid'
-// });
 
-// db.book.belongsToMany(db.user,
-//   {as:'users',
-//   through:'books_user',
-//   foreignKey:'bookid',
-//   otherKey:'userid'
-// });
 
 db.book.belongsTo(db.user);
 
