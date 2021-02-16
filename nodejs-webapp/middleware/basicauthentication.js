@@ -13,8 +13,8 @@ basictokenauthentication = (req, res, next) => {
 const base64Credentials =  req.headers.authorization.split(' ')[1];
 const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
 const [loginname, userpassword] = credentials.split(':');
-console.log("loginname "+loginname)
-console.log("userpassword "+userpassword)
+// console.log("loginname "+loginname)
+// console.log("userpassword "+userpassword)
 
 
 if(loginname==="" || userpassword===""){
