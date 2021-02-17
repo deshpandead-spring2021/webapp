@@ -17,6 +17,7 @@ module.exports = function(app) {
     next();
   });
 
+  //Post new user
   app.post("/v1/user",
 
     [
@@ -26,6 +27,7 @@ module.exports = function(app) {
     controller.signup
   );
 
+  // Change user info
 
 app.put("/v1/user/self",
 
@@ -38,7 +40,7 @@ updateuserinfo.updateuserinfo
 
 );
 
-
+//Get user info
 app.get("/v1/user/self",
 
 [
@@ -49,6 +51,8 @@ userinfocontroller.senduserinfo
 
 
 );
+
+//Post a new book 
 
 app.post("/books",
 
@@ -61,13 +65,14 @@ postbook.postbook
 
 );
 
+//Get book info from bookid
+
 app.get("/books/:id",
-[
-  tokenauth.basictokenauthentication
-],
 getbookid.getbookid
 
 )
+
+//Delete book from database using bookid
 
 app.delete("/books/:id",
 [
@@ -77,6 +82,8 @@ deletebookid.deletebook
 
 )
 
+
+//Get all the books from the database without authentication.
 app.get("/books",
 
 allbooks.getallbooks
