@@ -4,8 +4,6 @@ const User = db.user;
 const Book =db.book;
 const bookbyid =  require("../middleware/bookbyid");
 
-
-
 exports.getallbooks = async (req, res) => {
 
 const allbooks = Book.findAll({
