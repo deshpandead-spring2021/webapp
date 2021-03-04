@@ -51,7 +51,7 @@ module.exports = (sequelize, Sequelize) => {
     hooks:{
 
       beforeCreate: async function (user) {
-        const salt = bcrypt.genSaltSync();
+        const salt = bcrypt.genSaltSync();    
         user.password = bcrypt.hashSync(user.password, saltrounds);
       },
 

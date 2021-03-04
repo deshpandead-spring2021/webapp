@@ -45,7 +45,7 @@ const userinfo= await User.findOne({
     author:req.body.author,
     isbn:req.body.isbn,
     published_date:req.body.published_date,
-    user_id:userinfo.id
+    user_id:userinfo.id,
   })
 
   

@@ -1,3 +1,4 @@
+
 const db = require("../models");
 const sequelize = require("sequelize");
 const User = db.user;

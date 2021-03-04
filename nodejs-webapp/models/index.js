@@ -7,9 +7,9 @@ const sequelize = new Sequelize(
   configuration.DB,
   configuration.USER,
   configuration.PASSWORD,
-  
+
   {
-  host: configuration.DB_ENDPOINT,
+  host: configuration.HOST,
   dialect: "mysql",
   operatorsAliases: false,
 
@@ -24,8 +24,6 @@ pool: {
 
 );
 
-
-
 const db = {};
 
 db.Sequelize = Sequelize;
@@ -33,10 +31,20 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model")(sequelize, Sequelize);
 db.book = require("../models/books.model")(sequelize,Sequelize);
+db.file = require("./file.model")(sequelize,Sequelize);
 
+// db.file.belongsToMany(db.book,{
+//   through:"book_file",
+//   as:"book",
+//   foreignkey:"id"
+// })
+// ;
 
+// db.book.belongsToMany(db.file,{
+//   through:"book_file",
+//    as:"file",
+//   foreignkey:"id"
+// });
 
-
-db.book.belongsTo(db.user);
 
 module.exports = db;
