@@ -1,4 +1,3 @@
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -11,6 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+// global.__basedir = __dirname;
 
 const db = require("./models");
 const { category } = require("./models");
@@ -18,13 +18,13 @@ const { category } = require("./models");
 
 
 
-db.sequelize.sync({force: true}).then(() => {
-    console.log('Drop and Resync Db');
-  });
+// db.sequelize.sync({force: true}).then(() => {
+//     console.log('Drop and Resync Db');
+//   });
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
+// var corsOptions = {
+//   origin: "http://localhost:8081"
+// };
 
 // simple route
 app.get("/", (req, res) => {
