@@ -33,18 +33,10 @@ db.user = require("../models/user.model")(sequelize, Sequelize);
 db.book = require("../models/books.model")(sequelize,Sequelize);
 db.file = require("./file.model")(sequelize,Sequelize);
 
-// db.file.belongsToMany(db.book,{
-//   through:"book_file",
-//   as:"book",
-//   foreignkey:"id"
-// })
-// ;
 
-// db.book.belongsToMany(db.file,{
-//   through:"book_file",
-//    as:"file",
-//   foreignkey:"id"
-// });
+
+db.file.belongsTo(db.book);
+db.book.hasMany(db.file);
 
 
 module.exports = db;

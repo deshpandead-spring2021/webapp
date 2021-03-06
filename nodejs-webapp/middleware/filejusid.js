@@ -8,6 +8,7 @@ exports.findByjustid = (file_id) => {
         
       })
       .then((file_id) => {
+        console.log(file_id)
         return file_id;
       })
       .catch((err) => {
