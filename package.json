@@ -27,6 +27,7 @@
     "mysql2": "^2.2.5",
     "password-validator": "^5.1.1",
     "sequelize": "^6.5.0",
+    "sequelize-values": "^1.1.0",
     "supertest": "^6.1.3"
   }
 }

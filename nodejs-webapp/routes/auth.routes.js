@@ -21,9 +21,11 @@ const app =express();
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const filebyid =  require("../middleware/filebyid") 
 const justfileid= require("../middleware/filejusid")
+// var AWS = require('aws-sdk');
 
 const fs = require('fs');
 const AWS = require('aws-sdk');
+const { MulterError } = require("multer");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -112,7 +114,6 @@ allbooks.getallbooks
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication], upload.single('fileImage'),async function (req, res, next){
 
 
-
   console.log(req.file.originalname)
   const originalName =req.file.originalname
 
@@ -127,6 +128,7 @@ const [loginname, userpassword] = credentials.split(':');
 
 
 const bookidfromparam = req.params.book_id
+console.log(">>>>>>>>>>>>>>>>>>>>>> Priniting bookidparam " + bookidfromparam);
 
 const userinfo= await User.findOne({
     where: {
@@ -184,8 +186,10 @@ console.log((req.file));
     const file = await File.create({
       file_name:req.file.originalname,
       user_id:userinfo.id,
-      book_id:bookidfromparam
+       bookId:bookidfromparam
     })  
+
+
     
     .catch(err=>{
       res.status(401).send({message :err.message })
@@ -212,15 +216,16 @@ const fileName = req.file.path;
 
 const uploadFile = () => {
   fs.readFile(fileName, (err, data) => {
-     if (err) throw err;
+     if (err) {throw err};
      const params = {
-         Bucket: 'webapp.aditya.deshpande', // pass your bucket name
+         Bucket: process.env.S3_BUCKET_NAME, // pass your bucket name
          Key: _file.s3_object_name, // file will be saved as testBucket/contacts.csv
          Body: data
 
      };
      s3.upload(params, function(s3Err, data) {
          if (s3Err) throw s3Err
+         res.status(400).send("Bad request, make sure key name is 'fileImage'")
          console.log(`File uploaded successfully at ${data.Location}`)
      });
   });
@@ -235,31 +240,121 @@ uploadFile();
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication], upload.single('fileImage'),async function (req, res, next){
 
-  var AWS = require('aws-sdk');
 
-  // AWS.config.loadFromPath('');
+  const base64Credentials =  req.headers.authorization.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [loginname, userpassword] = credentials.split(':');
+  // console.log("loginname >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+loginname)
+  // console.log("userpassword "+userpassword)
   
-  var s3 = new AWS.S3();
-
-
-  const result = await justfileid.findByjustid(req.params.image_id)
-  console.log(result)
-
-
-  var params = {  Bucket: 'webapp.aditya.deshpande', Key: req.params.book_id +"/" + req.params.image_id+ "/" + result.file_name };
-  console.log(params.Key)
+  const bookidfromparam = req.params.book_id
+  const file_id= req.params.image_id
   
-  s3.deleteObject(params, function(err, data) {
-    if (err) console.log(err, err.stack);  // error
-    else     console.log("deleted",data);  // deleted
-  });
+  const userinfo= await User.findOne({
+      where: {
+        username: loginname
+      }
+      ,
+      attributes:["id"]
+    })
+    .then(user => {
+      if (user) {
+        // console.log("Printing user>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        // console.log(user)
+        return user;
+      }
+  
+      else{
+        console.log("Error here in fetching user data>>>>>")
+          res.status(400).json("Error while fetching user data. Please check if the user is registered for posting new book");
+      }
+      
+    });
+  
+  
+    const bookinfo= await Book.findOne({
+      where: {
+        id: bookidfromparam
+      }
+      ,
+      attributes:["user_id"]
+    })
+    .then(user => {
+      if (user) {
+        // console.log("Printing user>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        // console.log(user)
+        return user;
+      }
+  
+      else{
+        console.log("Error here in fetching user data>>>>>")
+          res.status(404).json("Error while fetching book. Please check if the book is posted.");
+      }
+      
+    });
+  
+    const fileinfo= await File.findOne({
+      where: {
+       file_id: file_id
+      }
+      ,
+      attributes:["user_id"]
+    })
+    .then(user => {
+      if (user) {
+        // console.log("Printing user>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        console.log(user)
+        // return user;
+      }
+  
+      else{
+        console.log("Error here in fetching file data>>>>>")
+          res.status(404).json("Error while fetching file info. Please check if the file is posted.");
+      }
+      
+    });
+    console.log("Printing existing userid>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+bookinfo.user_id)
+    console.log("Printing new userid >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+ userinfo.id)
+  
+    const existinguserid =bookinfo.user_id
+    const enteruserid = userinfo.id
+  
+    if(existinguserid==enteruserid){
+      var s3 = new AWS.S3();
+    
+    
+      const result = await justfileid.findByjustid(req.params.image_id)
+      console.log(result)
+    
+    
+      var params = {  Bucket: process.env.S3_BUCKET_NAME, Key: req.params.book_id +"/" + req.params.image_id+ "/" + result.file_name };
+      console.log(params.Key)
+      
+      s3.deleteObject(params, function(err, data) {
+        if (err) console.log(err, err.stack);  // error
+        else     console.log("deleted",data);  // deleted
+      });
+    
 
-  res.status(204).json("Image deleted successfully")
+    const file = await File.destroy({
+        where: {
+          file_id:file_id
+        }
+    })
+    .then(file => {
+            res.status(204).json("Image deleted successfully")
+    })
+      
+      .catch(err=>{
+        res.status(401).send({message :err.message })
+      })
+      
+    }
 
+    else{
+      res.status(401).json("Error make sure that you have authority to perform this action.")
+  }
 
 })
-
-
- 
 
 }

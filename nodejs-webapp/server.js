@@ -18,9 +18,9 @@ const { category } = require("./models");
 
 
 
-// db.sequelize.sync({force: true}).then(() => {
-//     console.log('Drop and Resync Db');
-//   });
+db.sequelize.sync({force: true}).then(() => {
+    console.log('Drop and Resync Db');
+  });
 
 // var corsOptions = {
 //   origin: "http://localhost:8081"

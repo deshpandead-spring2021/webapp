@@ -27,9 +27,6 @@ module.exports = (sequelize, Sequelize) => {
     },
     user_id:{
         type:DataTypes.UUID
-    },
-    book_id:{
-        type:DataTypes.UUID
     }
     
   },
@@ -37,9 +34,9 @@ module.exports = (sequelize, Sequelize) => {
 		hooks:{
 			beforeCreate: async function (file) {
 				console.log("In hook>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-				console.log(file.book_id)
+				console.log(file.bookId)
 				console.log(file.file_id+"File_id>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-				file.s3_object_name=file.book_id+ "/"+ file.file_id + "/" + file.file_name
+				file.s3_object_name=file.bookId+ "/"+ file.file_id + "/" + file.file_name
 			  }
 		}
   },
