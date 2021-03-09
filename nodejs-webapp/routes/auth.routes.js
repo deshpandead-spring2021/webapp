@@ -233,6 +233,7 @@ const uploadFile = () => {
         throw err
     };
      const params = {
+
          Bucket: process.env.S3_BUCKET_NAME, // pass your bucket name
          Key: _file.s3_object_name, // file will be saved in the bucket.
          Body: data
@@ -240,7 +241,7 @@ const uploadFile = () => {
      };
      s3.upload(params, function(s3Err, data) {
          if (s3Err) {
-          // res.status(201).send(err)
+           res.status(201).send(err)
           throw err
          }
          
