@@ -9,6 +9,7 @@ const deletebookid = require("../controllers/auth.deletebookid")
 const allbooks = require("../controllers/auth.allbooks")
 const multer = require('multer');
 const upload = multer({dest:'uploads/'});
+const upload1 = upload.single('file');
 const db = require("../models");
 const User = db.user;
 var bcrypt = require("bcryptjs");
@@ -111,15 +112,25 @@ allbooks.getallbooks
 
 //Post a new image for a book
 
-app.post("/books/:book_id/image",[tokenauth.basictokenauthentication], upload.single('fileImage'),async function (req, res, next){
+app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
 
 
-  console.log(req.file.originalname)
-  const originalName =req.file.originalname
+  upload1(req, res,async function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+    } else if (err) {
+      // An unknown error occurred when uploading.
+    }
+
+    // Everything went fine and save document in DB here.
 
 
-
-// verify auth credentials
+  // console.log(req.file.originalname)
+  // const originalName =req.file.originalName
+  // if(req.file.originalName == undefined){
+  //   res.status(404).send("Cannot read key value make sure the key name is 'file'")
+  // }
+  // verify auth credentials
 const base64Credentials =  req.headers.authorization.split(' ')[1];
 const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
 const [loginname, userpassword] = credentials.split(':');
@@ -175,7 +186,11 @@ const userinfo= await User.findOne({
   console.log("Printing existing userid>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+bookinfo.user_id)
   console.log("Printing new userid >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+ userinfo.id)
   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-console.log((req.file));
+  console.log((req.file));
+
+  if(req.file== undefined){
+    res.status(400).send("Bad request. the key name of file should be 'file'")
+  }
 
 
   const existinguserid =bookinfo.user_id
@@ -188,9 +203,6 @@ console.log((req.file));
       user_id:userinfo.id,
        bookId:bookidfromparam
     })  
-
-
-    
     .catch(err=>{
       res.status(401).send({message :err.message })
     })
@@ -210,13 +222,20 @@ console.log((req.file));
   }
 
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+
+});
 
 const fileName = req.file.path;
 
 const uploadFile = () => {
   fs.readFile(fileName, (err, data) => {
-     if (err) {throw err};
+     if (err) {
+      res.status(201).send(err)
+        throw err
+    };
      const params = {
          Bucket: process.env.S3_BUCKET_NAME, // pass your bucket name
          Key: _file.s3_object_name, // file will be saved as testBucket/contacts.csv
@@ -224,8 +243,12 @@ const uploadFile = () => {
 
      };
      s3.upload(params, function(s3Err, data) {
-         if (s3Err) throw s3Err
-         res.status(400).send("Bad request, make sure key name is 'fileImage'")
+         if (s3Err) {
+          // res.status(201).send(err)
+          throw err
+         }
+         
+        //  res.status(400).send("Bad request, make sure key name is 'fileImage'")
          console.log(`File uploaded successfully at ${data.Location}`)
      });
   });
@@ -233,12 +256,15 @@ const uploadFile = () => {
 
 uploadFile();
 
+  })
+
 
  
 });
 
 
-app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication], upload.single('fileImage'),async function (req, res, next){
+app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
+
 
 
   const base64Credentials =  req.headers.authorization.split(' ')[1];
