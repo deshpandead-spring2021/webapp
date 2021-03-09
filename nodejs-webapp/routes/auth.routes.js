@@ -234,7 +234,7 @@ const uploadFile = () => {
     };
      const params = {
          Bucket: process.env.S3_BUCKET_NAME, // pass your bucket name
-         Key: _file.s3_object_name, // file will be saved as testBucket/contacts.csv
+         Key: _file.s3_object_name, // file will be saved in the bucket.
          Body: data
 
      };
