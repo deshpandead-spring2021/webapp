@@ -49,7 +49,7 @@ jobs:
             cp ../*.yml .
             cp ../*.json .
             cp ../*.md .
-            cp ../*.gitignore .
+            cp ../.gitignore .
             cp ../*.sh .
             pwd
             
