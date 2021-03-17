@@ -17,4 +17,5 @@ Make sure your application is connected to the MYSQL database and then move to n
 
 ## Testing 
 
-A simple mocha test written as a part of assignment, which send a GET request to the application and checks if it recieves a HTTP 200 status.
+A simple mocha test written as a part of assignment, which send a GET request to the application and checks if it recieves a HTTP 200 status. The command to run test is 
+mocha apptest.js
