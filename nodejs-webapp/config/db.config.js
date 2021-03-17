@@ -4,6 +4,8 @@ dotenv.config();
 
 var mysql = require('mysql');
 
+
+
 configuration= {
 
   HOST:process.env.DB_ENDPOINT,

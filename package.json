@@ -4,7 +4,7 @@
   "description": "CSYE 6225 webapp nodejs application",
   "main": "server.js",
   "scripts": {
-    "test": "mocha 'test/**/*.js'"
+    "test": "mocha '/nodejs-webapp/test/apptest.js'"
   },
   "author": "",
   "license": "ISC",
