@@ -4,7 +4,7 @@
   "description": "CSYE 6225 webapp nodejs application",
   "main": "server.js",
   "scripts": {
-    "test": "mocha 'test/**/*.js' -- recursive --reporter mocha-junit-reporter --timeout 60000 --exit"
+    "test": "mocha 'test/**/*.js'"
   },
   "author": "",
   "license": "ISC",
