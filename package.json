@@ -4,7 +4,7 @@
   "description": "CSYE 6225 webapp nodejs application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
