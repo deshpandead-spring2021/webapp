@@ -40,17 +40,8 @@ jobs:
           mkdir codedeploy_webapp
             cd codedeploy_webapp
             pwd
-            cp -r ../nodejs-webapp/config .
-            cp -r ../nodejs-webapp/controllers . 
-            cp -r ../nodejs-webapp/middleware .
-            cp -r ../nodejs-webapp/models .
-            cp -r ../nodejs-webapp/routes .
-            cp -r ../nodejs-webapp/test .
-            cp ../*.yml .
-            cp ../*.json .
-            cp ../*.md .
-            cp ../.gitignore .
-            cp ../*.sh .
+            cp -r ../nodejs-webapp/* .
+            cp -r 
             pwd
             
             zip -r webapp-${{github.run_number}}.zip .
