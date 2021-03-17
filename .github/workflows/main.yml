@@ -46,12 +46,12 @@ jobs:
             cp -r ../nodejs-webapp/models .
             cp -r ../nodejs-webapp/routes .
             cp -r ../nodejs-webapp/test .
-            cp ./*.yml .
-            cp ./*.json .
-            cp ./*.js .
-            cp ./*md .
-            cp ./.gitignore .
-            cp ./*.sh .
+            cp ../../*.yml .
+            cp ../../*.json .
+            cp ../../*.js .
+            cp ../../*md .
+            cp ../../.gitignore .
+            cp ../../*.sh .
             pwd
             
             zip -r webapp-${{github.run_number}}.zip .
