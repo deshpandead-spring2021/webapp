@@ -1,6 +1,8 @@
 cd
 pwd
-cd /home/ubuntu/webapp/nodejs-webapp
+cd webapp
+ls -al
+cd webapp/nodejs-webapp
 pwd
 # printenv
 # pm2 start server.js
