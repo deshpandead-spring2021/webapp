@@ -1,4 +1,4 @@
-
+sudo pm2 kill
 pwd
 cd /home/ubuntu
 pwd
