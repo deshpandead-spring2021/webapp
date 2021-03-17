@@ -5,14 +5,14 @@ files:
     destination: /home/ubuntu/webapp
 hooks:
   BeforeInstall:
-   - location: ./beforewebapp.sh
+   - location: ./beforeinstall.sh
      timeout: 180
      runas: ubuntu
   AfterInstall:
-   - location: ./afterwebapp.sh
+   - location: ./afterinstall.sh
      timeout: 180
      runas: ubuntu
   ApplicationStart:
-   - location: ./onwebapp.sh
+   - location: ./appstart.sh
      runas: ubuntu
      timeout: 60
