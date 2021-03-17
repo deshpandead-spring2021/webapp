@@ -48,7 +48,6 @@ jobs:
             cp -r ../nodejs-webapp/test .
             cp ../*.yml .
             cp ../*.json .
-            cp ../*.js .
             cp ../*.md .
             cp ../*.gitignore .
             cp ../*.sh .
