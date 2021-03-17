@@ -107,3 +107,7 @@ dist
 # Ignoring uploads folder.
 
 */uploads/*
+
+
+# Ignoringing any zip files
+*.zip
