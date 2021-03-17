@@ -40,16 +40,15 @@ jobs:
           mkdir codedeploy_webapp
             cd codedeploy_webapp
             pwd
-            cp -r ../config .
-            cp -r ../controllers . 
-            cp -r ../middleware .
-            cp -r ../models .
-            cp -r ../routes .
-            cp -r ../test .
+            cp -r ../nodejs-webapp/config .
+            cp -r ../nodejs-webapp/controllers . 
+            cp -r ../nodejs-webapp/middleware .
+            cp -r ../nodejs-webapp/models .
+            cp -r ../nodejs-webapp/routes .
+            cp -r ../nodejs-webapp/test .
             cp ../*.yml .
             cp ../*.json .
-            cp ../*.js .
-            cp ../*md .
+            cp ../*.md .
             cp ../.gitignore .
             cp ../*.sh .
             pwd
