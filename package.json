@@ -4,6 +4,7 @@
   "description": "CSYE 6225 webapp nodejs application",
   "main": "server.js",
   "scripts": {
+    "start":"node './nodejs-webapp/server.js'",
     "test": "mocha './nodejs-webapp/test/apptest.js'"
   },
   "author": "",

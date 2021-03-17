@@ -22,6 +22,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: install npm
         run: npm install
+      
+      # Start the application using runners shell
+      - name: start server.js
+        run: npm start   
 
       # Runs a set of commands using the runners shell
       - name: Run tests
