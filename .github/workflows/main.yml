@@ -45,7 +45,6 @@ jobs:
             pwd
             cp ../*.yml .
             cp ../*.json .
-            cp ../*.js .
             cp ../*md .
             cp ../.gitignore .
             cp ../*.sh .
