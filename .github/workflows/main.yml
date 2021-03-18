@@ -37,7 +37,7 @@ jobs:
           pwd
           ls -al
           echo "present dir is"
-            zip -r webapp1.zip *
+            zip -r webapp1.zip  *.json *.yml *.sh ./nodejs-webapp
       
       - name: Upload Artifact to S3
         run: |
@@ -45,6 +45,7 @@ jobs:
             ls -al
             aws configure list
             aws s3 cp webapp1.zip s3://${{secrets.CODE_DEPLOY_S3_BUCKET}} --sse
+      
       - name: Make CodeDeploy API call
         run: |
             echo "Calling CodeDeploy Agent to pick the artifact and deploy on EC2 instance"
