@@ -21,10 +21,7 @@ jobs:
       - name: install npm
         run: npm install
 
-      # Runs a set of commands using the runners shell
-      - name: Run tests
-        run: npm test
-
+      # Configure AWS credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
