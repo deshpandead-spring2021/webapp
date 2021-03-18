@@ -2,7 +2,7 @@ cd
 pwd
 cd webapp
 ls -al
-cd webapp/nodejs-webapp
+cd nodejs-webapp
 pwd
 # printenv
 # pm2 start server.js

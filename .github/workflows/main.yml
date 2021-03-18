@@ -1,4 +1,4 @@
-
+ 
 name: pull request check workflow
 
 on:
@@ -21,7 +21,10 @@ jobs:
       - name: install npm
         run: npm install
 
-    
+      # # Runs a set of commands using the runners shell
+      # - name: Run tests
+      #   run: npm test
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -37,25 +40,32 @@ jobs:
           pwd
           ls -al
           echo "present dir is"
-          zip -r webapp.zip * 
-          pwd
-          ls
+          mkdir codedeploy_webapp
+            cd codedeploy_webapp
+            pwd
+            cp ../*.yml .
+            cp ../*.json .
+            cp ../*md .
+            cp ../.gitignore .
+            cp ../*.sh .
+            mkdir nodejs-webapp
+            cd nodejs-webapp
+            pwd
+            cp -r ../../nodejs-webapp/* .
+            ls
+            pwd
+            cd ..
+            zip -r ../webapp-${{github.run_number}}.zip *
+            ls
             
-      #       ls -al
-      #       pwd
-      #       cd ..
-      #       pwd
-      #       ls -al
-      #       cd codedeploy_webapp
-      #       pwd
-      #       ls -al
+   
       - name: Upload Artifact to S3
         run: |
             pwd
             ls -al
             aws configure list
-            aws s3 cp webapp.zip s3://${{secrets.CODE_DEPLOY_S3_BUCKET}} --sse
+            aws s3 cp webapp-${{github.run_number}}.zip s3://${{secrets.CODE_DEPLOY_S3_BUCKET}} --sse
       - name: Make CodeDeploy API call
-      #   run: |
-      #       echo "Calling CodeDeploy Agent to pick the artifact and deploy on EC2 instance"
-      #       aws deploy create-deployment --application-name "csye6225-webapp" --deployment-group-name "csye6225-webapp-deployment" --s3-location bucket=${{secrets.CODE_DEPLOY_S3_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip --file-exists-behavior OVERWRITE
+        run: |
+            echo "Calling CodeDeploy Agent to pick the artifact and deploy on EC2 instance"
+            aws deploy create-deployment --application-name "csye6225-webapp" --deployment-group-name "csye6225-webapp-deployment" --s3-location bucket=${{secrets.CODE_DEPLOY_S3_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip --file-exists-behavior OVERWRITE
