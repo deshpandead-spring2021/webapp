@@ -38,7 +38,23 @@ jobs:
           ls -al
           echo "present dir is"
           mkdir codedeploy_webapp
-          zip -r webapp-${{github.run_number}}.zip nodejs-webapp *.sh *.json *.yml *.md
+            cd codedeploy_webapp
+            pwd
+            cp -r ../config .
+            cp -r ../controllers . 
+
+            cp -r ../middleware .
+            cp -r ../models .
+            cp -r ../routes .
+            cp ../*.yml .
+            cp ../*.json .
+            cp ../*.js .
+            cp ../*md .
+            cp ../.gitignore .
+            cp ../*.sh .
+            pwd
+            
+            zip -r webapp-${{github.run_number}}.zip .
             ls -al
             pwd
             cd ..
