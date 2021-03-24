@@ -1,6 +1,10 @@
 var DataTypes = require('sequelize/lib/data-types');
 const bcrypt = require ("bcryptjs")
 const saltrounds =8;
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 module.exports = (sequelize, Sequelize) => {
 
@@ -18,11 +22,15 @@ module.exports = (sequelize, Sequelize) => {
       validate:{
         isEmail:{
             message:"wrong email format"
-        },
+            },
+        
         notEmpty:{
             message:'Username cannot be null'
         }
+
+        
       }
+      
       
     },
     password: {
@@ -33,7 +41,12 @@ module.exports = (sequelize, Sequelize) => {
 /**
  * Minimum nine characters, at least one uppercase letter,one lowercase letter,one number and one special character
  */
-      }
+
+
+}
+
+
+
       },
 
     first_name:{
