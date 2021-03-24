@@ -4,7 +4,7 @@
   "description": "CSYE 6225 webapp nodejs application",
   "main": "server.js",
   "scripts": {
-    "start":"node './nodejs-webapp/server.js'",
+    "start": "node './nodejs-webapp/server.js'",
     "test": "mocha './nodejs-webapp/test/apptest.js'"
   },
   "author": "",
@@ -26,9 +26,12 @@
     "multer-s3": "^2.9.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "node-statsd": "^0.1.1",
     "password-validator": "^5.1.1",
     "sequelize": "^6.5.0",
     "sequelize-values": "^1.1.0",
-    "supertest": "^6.1.3"
+    "statsd-client": "^0.4.5",
+    "supertest": "^6.1.3",
+    "winston": "^3.3.3"
   }
 }
