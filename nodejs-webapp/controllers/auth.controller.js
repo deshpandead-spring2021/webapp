@@ -5,15 +5,14 @@ const findById =  require("../middleware/userbyid")
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const logger = require('../config/logger')
 var SDC = require('statsd-client');
+const { format } = require("express/lib/response");
 client = new SDC();
+var user_create_start_time =Date.now();
+var db_create_user_create_start_time= Date.now();
 
 
 
 exports.signup = async (req, res) => {
-
-var user_create_start_time=Date.now();
-logger.info('User creation process started');
-client.increment('counter_user_create');
 
   // Save User to Database
 
@@ -29,6 +28,7 @@ client.increment('counter_user_create');
     logger.warn('Bad Request');
     var user_create_end_time = Date.now();
     client.timing('timing_user_create', user_create_end_time - user_create_start_time );
+
     res.status(400).send({message :err.message })
   })
   
@@ -36,11 +36,16 @@ client.increment('counter_user_create');
 await sleep(100);
 
 
+
 const _user = await findById.findById(enteruser.id);
 
+var user_create_end_time = Date.now();
 
+logger.info("User creation request was successful")
+var db_create_user_create_end_time = Date.now();
 
-
+client.timing('timing_user_create', user_create_end_time - user_create_start_time );
+client.timing('timing_db_create_user', db_create_user_create_end_time - db_create_user_create_start_time);
 res.status(201).send(_user);
 
 };

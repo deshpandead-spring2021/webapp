@@ -1,6 +1,10 @@
 const sequelize = require("sequelize");
 const db = require("../models"); 
 const File = db.file;
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 exports.findByjustid = (file_id) => {
     return File.findByPk(file_id, {

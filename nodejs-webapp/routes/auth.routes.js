@@ -22,12 +22,15 @@ const app =express();
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const filebyid =  require("../middleware/filebyid") 
 const justfileid= require("../middleware/filejusid")
-const winston = require ('winston')
-// var AWS = require('aws-sdk');
-
 const fs = require('fs');
 const AWS = require('aws-sdk');
 const { MulterError } = require("multer");
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+var user_create_start_time=Date.now();
+
+
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -40,7 +43,7 @@ module.exports = function(app) {
 
   //Post new user
   app.post("/v1/user",
-
+  
     [
       verifySignUp.checkDuplicateUsernameOrEmail
     
@@ -78,6 +81,8 @@ userinfocontroller.senduserinfo
 
 app.post("/books",
 
+
+
 [
   tokenauth.basictokenauthentication
 ],
@@ -96,6 +101,7 @@ getbookid.getbookid
 //Delete book from database using bookid
 
 app.delete("/books/:id",
+
 [
   tokenauth.basictokenauthentication
 ],
@@ -114,6 +120,7 @@ allbooks.getallbooks
 //Post a new image for a book
 
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
+
 
 
   upload1(req, res,async function (err) {
@@ -262,6 +269,7 @@ uploadFile();
 
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
+
 
 
 

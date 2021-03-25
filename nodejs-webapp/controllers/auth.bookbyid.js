@@ -3,6 +3,10 @@ const User = db.user;
 const Book =db.book;
 const bookbyid =  require("../middleware/bookbyid")
 const sleep = ms => new Promise(res => setTimeout(res, ms));
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 
 exports.getbookid = async (req, res) => {

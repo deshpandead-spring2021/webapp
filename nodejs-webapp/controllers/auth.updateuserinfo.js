@@ -1,6 +1,10 @@
 const db = require("../models");
 const User = db.user;
 const sleep = ms => new Promise(res => setTimeout(res, ms));
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
    exports.updateuserinfo = async (req,res)=>{
     const base64Credentials =  req.headers.authorization.split(' ')[1];

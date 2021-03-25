@@ -1,4 +1,8 @@
 const uploadFile = require("../middleware/upload");
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 const upload = async (req, res) => {
   try {

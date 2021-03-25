@@ -5,6 +5,10 @@ const bookbyid =  require("../middleware/bookbyid");
 const { user } = require("../models");
 const fileid = require("../middleware/fileidforbookid")
 const sleep = ms => new Promise(res => setTimeout(res, ms));
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 var AWS = require('aws-sdk');
 const { json } = require("express/lib/response");
