@@ -2,9 +2,10 @@ const sequelize = require("sequelize");
 const db = require("../models"); 
 const Book = db.book;
 const File =db.file
-const logger = require ('../config/logger.js');
-var StatsD = require('node-statsd'),
-client = new StatsD();
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 exports.findBybookid = (bookid) => {
     return Book.findByPk(bookid, {

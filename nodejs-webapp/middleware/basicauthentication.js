@@ -9,9 +9,6 @@ client = new StatsD();
 basictokenauthentication = (req, res, next) => {
     if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
         logger.warn('Bad Request');
-        var user_create_end_time = Date.now();
-        client.timing('timing_user_create', user_create_end_time - user_create_start_time );
-
         return res.status(401).json({ message: 'Missing Authorization Header' });
     }
 
@@ -26,8 +23,6 @@ const [loginname, userpassword] = credentials.split(':');
 
 if(loginname==="" || userpassword===""){
     logger.warn('Bad Request');
-    var user_create_end_time = Date.now();
-    client.timing('timing_user_create', user_create_end_time - user_create_start_time );
 
     res.status(400).send("Username or password fields are not filled.")
     }
@@ -61,8 +56,6 @@ else{
 
     else{
         logger.warn('Bad Request');
-        var user_create_end_time = Date.now();
-        client.timing('timing_user_create', user_create_end_time - user_create_start_time );
         res.status(400).send("Username or password is incorrect. Please make sure you have signed up for this service")
 
     }
@@ -71,9 +64,6 @@ else{
   })
   .catch((err) => {
     logger.warn('Bad Request');
-    var user_create_end_time = Date.now();
-    client.timing('timing_user_create', user_create_end_time - user_create_start_time );
-    console.log(">> Error while registering User: ", err);
     res.status(400).send("Cannot register user. Please check if you have entered correct data")
   });
    

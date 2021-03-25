@@ -5,6 +5,10 @@ const User = db.user;
 const Book =db.book;
 const File = db.file
 const bookbyid =  require("../middleware/bookbyid");
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
 
 exports.getallbooks = async (req, res) => {
 

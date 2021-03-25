@@ -1,6 +1,10 @@
 const db = require("../models");
 const User = db.user;
 const tokenauth = require("../middleware/basicauthentication");
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+
  
   // Username
 

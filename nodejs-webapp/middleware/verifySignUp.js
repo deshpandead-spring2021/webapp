@@ -4,8 +4,6 @@ const logger = require('../config/logger')
 var SDC = require('statsd-client');
 client = new SDC();
 
-
-
 checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
   User.findOne({

@@ -22,12 +22,15 @@ const app =express();
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const filebyid =  require("../middleware/filebyid") 
 const justfileid= require("../middleware/filejusid")
-const winston = require ('winston')
-// var AWS = require('aws-sdk');
-
 const fs = require('fs');
 const AWS = require('aws-sdk');
 const { MulterError } = require("multer");
+const logger = require('../config/logger')
+var SDC = require('statsd-client');
+client = new SDC();
+var user_create_start_time=Date.now();
+
+
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -40,7 +43,8 @@ module.exports = function(app) {
 
   //Post new user
   app.post("/v1/user",
-
+  client.incerement('counter_user_create'),
+  logger.info('User creation process started')
     [
       verifySignUp.checkDuplicateUsernameOrEmail
     
@@ -51,6 +55,7 @@ module.exports = function(app) {
   // Change user info
 
 app.put("/v1/user/self",
+client.incerement('counter_user_update')
 
 [
   tokenauth.basictokenauthentication
@@ -63,7 +68,7 @@ updateuserinfo.updateuserinfo
 
 //Get user info
 app.get("/v1/user/self",
-
+client.incerement('counter_get_user')
 [
   tokenauth.basictokenauthentication
 
@@ -77,6 +82,8 @@ userinfocontroller.senduserinfo
 
 
 app.post("/books",
+client.incerement('counter_post_book')
+
 
 [
   tokenauth.basictokenauthentication
@@ -89,6 +96,7 @@ postbook.postbook
 //Get book info from bookid
 
 app.get("/books/:id",
+client.incerement('counter_get_book'),
 getbookid.getbookid
 
 )
@@ -96,6 +104,7 @@ getbookid.getbookid
 //Delete book from database using bookid
 
 app.delete("/books/:id",
+client.incerement('counter_delete_book')
 [
   tokenauth.basictokenauthentication
 ],
@@ -106,6 +115,7 @@ deletebookid.deletebook
 
 //Get all the books from the database without authentication.
 app.get("/books",
+client.incerement('counter_get_book'),
 
 allbooks.getallbooks
 
@@ -114,6 +124,8 @@ allbooks.getallbooks
 //Post a new image for a book
 
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
+
+  client.incerement('counter_post_book_image')
 
 
   upload1(req, res,async function (err) {
@@ -262,6 +274,8 @@ uploadFile();
 
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
+
+  client.incerement('counter_delete_book_image')
 
 
 
