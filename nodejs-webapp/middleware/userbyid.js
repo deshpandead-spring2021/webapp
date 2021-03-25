@@ -22,6 +22,7 @@ exports.findById = (userid) => {
         client.timing('db_user_findbyid_stop_time',db_user_findbyid_stop_time-db_user_findbyid_start_time)
         client.timing('timing_user_create', user_create_end_time - user_create_start_time );
         // console.log(">> Error while finding Question: ", err);
+        logger.warn("Bad request check if data is entered correctly.")
          res.status(400).send("Cannot register user. Please check if you have entered correct data")
       });
   };

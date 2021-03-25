@@ -29,6 +29,7 @@ exports.findBybookid = (bookid) => {
         var db_find_book_byid_stop_time= Date.now();
          console.log(">> Error while finding Question: ", err);
          client.timing('timing_db_find_bookbyid',db_find_book_byid_stop_time-db_find_book_byid_start_time)
+         logger.info("Bad request cannot fetch book by id.")
          res.status(400).send("Cannot fetch the book. Make sure this book has posted.")
       });
   };
