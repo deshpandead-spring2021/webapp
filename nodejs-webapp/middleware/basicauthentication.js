@@ -7,6 +7,10 @@ client = new StatsD();
 
 
 basictokenauthentication = (req, res, next) => {
+    
+  client.increment('counter_get_user_data')
+
+
     if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
         logger.warn('Bad Request');
         return res.status(401).json({ message: 'Missing Authorization Header' });
@@ -29,6 +33,8 @@ if(loginname==="" || userpassword===""){
 
     
 else{
+    var db_find_user_email_start_time= Date.now();
+
     User.findOne({
         where:{
             username:loginname
@@ -40,6 +46,8 @@ else{
   .then(user=>{
     // console.log("Printing user.password>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     // console.log(user.password)
+    var db_find_user_email_stop_time= Date.now();
+    client.timing('timing_db_find_user_byemail',db_find_user_email_stop_time-db_find_user_email_start_time)
 
     var result = bcrypt.compareSync(userpassword,user.password)
 
@@ -56,6 +64,8 @@ else{
 
     else{
         logger.warn('Bad Request');
+        var db_find_user_email_stop_time= Date.now();
+        client.timing('timing_db_find_user_byemail',db_find_user_email_stop_time-db_find_user_email_start_time)
         res.status(400).send("Username or password is incorrect. Please make sure you have signed up for this service")
 
     }
@@ -63,6 +73,8 @@ else{
     
   })
   .catch((err) => {
+    var db_find_user_email_stop_time= Date.now();
+    client.timing('timing_db_find_user_byemail',db_find_user_email_stop_time-db_find_user_email_start_time)
     logger.warn('Bad Request');
     res.status(400).send("Cannot register user. Please check if you have entered correct data")
   });

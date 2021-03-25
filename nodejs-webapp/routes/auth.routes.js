@@ -28,7 +28,7 @@ const { MulterError } = require("multer");
 const logger = require('../config/logger')
 var SDC = require('statsd-client');
 client = new SDC();
-var user_create_start_time=Date.now();
+
 
 
 
@@ -43,7 +43,6 @@ module.exports = function(app) {
 
   //Post new user
   app.post("/v1/user",
-  
     [
       verifySignUp.checkDuplicateUsernameOrEmail
     
@@ -66,7 +65,6 @@ updateuserinfo.updateuserinfo
 
 //Get user info
 app.get("/v1/user/self",
-
 [
   tokenauth.basictokenauthentication
 
@@ -80,8 +78,6 @@ userinfocontroller.senduserinfo
 
 
 app.post("/books",
-
-
 
 [
   tokenauth.basictokenauthentication
@@ -112,7 +108,6 @@ deletebookid.deletebook
 
 //Get all the books from the database without authentication.
 app.get("/books",
-
 allbooks.getallbooks
 
 )
@@ -121,7 +116,8 @@ allbooks.getallbooks
 
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
 
-
+  var post_image_start_time= Date.now()
+  client.increment('counter_post_new_image')
 
   upload1(req, res,async function (err) {
     if (err instanceof multer.MulterError) {
@@ -226,6 +222,8 @@ const userinfo= await User.findOne({
 
 
   else{
+    var post_image_stop_time= Date.now()
+    client.timing('timing_post_image',post_image_stop_time-post_image_start_time)
       res.status(401).json("Error make sure that you have authority to perform this action.")
   }
 
@@ -233,6 +231,7 @@ const userinfo= await User.findOne({
 const s3 = new AWS.S3();
 
 const fileName = req.file.path;
+var s3_upload_image_start_time= Date.now();
 
 const uploadFile = () => {
   fs.readFile(fileName, (err, data) => {
@@ -248,12 +247,19 @@ const uploadFile = () => {
 
      };
      s3.upload(params, function(s3Err, data) {
+
+      var s3_upload_image_stop_time= Date.now();
+      client.timing('timing_s3_upload_time',s3_upload_image_stop_time-s3_upload_image_start_time)
          if (s3Err) {
            res.status(201).send(err)
           throw err
          }
          
         //  res.status(400).send("Bad request, make sure key name is 'fileImage'")
+        var s3_upload_image_stop_time= Date.now();
+        var post_image_stop_time= Date.now()
+        client.timing('timing_post_image',post_image_stop_time-post_image_start_time)
+        client.timing('s3_upload_time',s3_upload_image_stop_time-s3_upload_image_start_time)
          console.log(`File uploaded successfully at ${data.Location}`)
      });
   });
@@ -270,7 +276,7 @@ uploadFile();
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
 
-
+var delete_image_start_time= Date.now()
 
 
   const base64Credentials =  req.headers.authorization.split(' ')[1];
@@ -362,11 +368,17 @@ app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication
       var params = {  Bucket: process.env.S3_BUCKET_NAME, Key: req.params.book_id +"/" + req.params.image_id+ "/" + result.file_name };
       console.log(params.Key)
       
+      var s3_delete_image_start_time=Date.now();
+
       s3.deleteObject(params, function(err, data) {
         if (err) console.log(err, err.stack);  // error
         else     console.log("deleted",data);  // deleted
       });
     
+      var s3_delete_image_stop_time=Date.now();
+      client.timing('timing_s3_delete_image',s3_delete_image_start_time-s3_delete_image_stop_time)
+
+    var db_delete_file_start_time=Date.now();
 
     const file = await File.destroy({
         where: {
@@ -374,16 +386,26 @@ app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication
         }
     })
     .then(file => {
+      var db_delete_file_stop_time=Date.now();
+      client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
             res.status(204).json("Image deleted successfully")
     })
       
       .catch(err=>{
+        var db_delete_file_stop_time=Date.now();
+        client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
+        var delete_image_stop_time= Date.now()
+        client.timing('timing_delete_image',delete_image_stop_time-delete_image_start_time)
         res.status(401).send({message :err.message })
       })
       
     }
 
     else{
+      var db_delete_file_stop_time=Date.now();
+      client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
+      var delete_image_stop_time= Date.now()
+      client.timing('timing_delete_image',delete_image_stop_time-delete_image_start_time)
       res.status(401).json("Error make sure that you have authority to perform this action.")
   }
 

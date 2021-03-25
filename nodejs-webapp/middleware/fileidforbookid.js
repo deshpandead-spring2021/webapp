@@ -11,7 +11,8 @@ client = new SDC();
 
 
 exports.filebyuserid = (bookId) => {
-    console.log("Herere?????????????????????????????????")
+var db_file_user_id_start_time= Date.now();
+    // console.log("Herere?????????????????????????????????")
   return File.findAll({
        raw:true,
         where: {
@@ -25,6 +26,8 @@ exports.filebyuserid = (bookId) => {
     //   })
 
     .then((fid => {
+      var db_file_user_id_stop_time= Date.now()
+      client.timing('timing_db_find_file_user_id',db_file_user_id_stop_time-db_file_user_id_start_time)
         fid.map(fid => fid.file_id)
         console.log(fid)
         return fid
@@ -32,6 +35,8 @@ exports.filebyuserid = (bookId) => {
     )
     )
       .catch((err) => {
+        var db_file_user_id_stop_time= Date.now()
+        client.timing('timing_db_find_file_user_id',db_file_user_id_stop_time-db_file_user_id_start_time)
          console.log(">> Error while finding Question: ", err);
         //  res.status(400).send("Cannot fetch the book. Make sure this book has posted.")
       });
