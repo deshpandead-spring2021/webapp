@@ -43,8 +43,7 @@ module.exports = function(app) {
 
   //Post new user
   app.post("/v1/user",
-  client.increment('counter_user_create'),
-  logger.info('User creation process started')
+  
     [
       verifySignUp.checkDuplicateUsernameOrEmail
     
@@ -55,7 +54,6 @@ module.exports = function(app) {
   // Change user info
 
 app.put("/v1/user/self",
-client.increment('counter_user_update')
 
 [
   tokenauth.basictokenauthentication
@@ -68,7 +66,7 @@ updateuserinfo.updateuserinfo
 
 //Get user info
 app.get("/v1/user/self",
-client.increment('counter_get_user')
+
 [
   tokenauth.basictokenauthentication
 
@@ -82,7 +80,7 @@ userinfocontroller.senduserinfo
 
 
 app.post("/books",
-client.increment('counter_post_book')
+
 
 
 [
@@ -96,7 +94,6 @@ postbook.postbook
 //Get book info from bookid
 
 app.get("/books/:id",
-client.increment('counter_get_book'),
 getbookid.getbookid
 
 )
@@ -104,7 +101,7 @@ getbookid.getbookid
 //Delete book from database using bookid
 
 app.delete("/books/:id",
-client.increment('counter_delete_book')
+
 [
   tokenauth.basictokenauthentication
 ],
@@ -115,7 +112,6 @@ deletebookid.deletebook
 
 //Get all the books from the database without authentication.
 app.get("/books",
-client.increment('counter_get_book'),
 
 allbooks.getallbooks
 
@@ -125,7 +121,6 @@ allbooks.getallbooks
 
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
 
-  client.increment('counter_post_book_image')
 
 
   upload1(req, res,async function (err) {
@@ -275,7 +270,6 @@ uploadFile();
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
 
-  client.increment('counter_delete_book_image')
 
 
 
