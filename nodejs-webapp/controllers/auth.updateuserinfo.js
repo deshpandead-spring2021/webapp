@@ -6,10 +6,10 @@ var SDC = require('statsd-client');
 client = new SDC();
 
 exports.updateuserinfo = async (req,res)=>{
+  logger.info("Update user info request started.")
   var update_user_info_start_time= Date.now() 
   client.increment('counter_update_user')
 
-  logger.info("Started updating userinfo")
     const base64Credentials =  req.headers.authorization.split(' ')[1];
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [loginname, userpassword] = credentials.split(':');
@@ -28,6 +28,7 @@ console.log(loginname)
 if(sentusername || account_created|| account_updated){
    var update_user_info_stop_time= Date.now()
    client.timing('timing_update_user_info',update_user_info_stop_time-update_user_info_start_time)
+   logger.warn("Bad request")
 
     res.status(400).json("Cannot update username or account_created or account_updated field ")
 }

@@ -38,6 +38,7 @@ var db_file_user_id_start_time= Date.now();
         var db_file_user_id_stop_time= Date.now()
         client.timing('timing_db_find_file_user_id',db_file_user_id_stop_time-db_file_user_id_start_time)
          console.log(">> Error while finding Question: ", err);
+         logger.warn("Bad request ")
         //  res.status(400).send("Cannot fetch the book. Make sure this book has posted.")
       });
   };

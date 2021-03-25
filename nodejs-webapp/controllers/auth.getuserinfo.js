@@ -11,6 +11,7 @@ client = new SDC();
   exports.senduserinfo = async (req,res)=>{
 
   client.increment('counter_get_user')
+  logger.info("Getting user info")
   var get_user_info_start_time= Date.now()
     
     const base64Credentials =  req.headers.authorization.split(' ')[1];

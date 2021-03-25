@@ -10,7 +10,7 @@ client = new SDC();
 
 
 exports.postbook = async (req, res) => {
-
+  logger.info("Posting a new book api called.")
   client.increment('counter_post_new_book')
   var post_book_start_time= Date.now()
 
@@ -41,7 +41,7 @@ const userinfo= await User.findOne({
 
     else{
       var db_finduser_byloginname_stop_time=Date.now()
-      logger.info("Error here in fetching user data>>>>>>>>>>")
+      logger.warn("Error here in fetching user data>>>>>>>>>>")
       console.log("Error here in fetching user data>>>>>")
       client.timing('timing_db_find_user_logginname',db_finduser_byloginname_stop_time-db_finduser_byloginname_start_time)
         res.status(400).json("Error while fetching user data. Please check if the user is registered for posting new book");
@@ -69,6 +69,7 @@ const userinfo= await User.findOne({
 
     var db_create_new_book_stop_time= Date.now();
     client.timing('timing_db_create_book',db_create_new_book_stop_time-db_create_new_book_start_time)
+    logger.info("Bad request for posting book.")
     res.status(400).send({message :err.message })
   })
   
@@ -81,7 +82,7 @@ var db_create_new_book_stop_time= Date.now();
 var post_book_stop_time= Date.now()
 client.timing('timing_post_new_book',post_book_stop_time-post_book_start_time)
 client.timing('timing_db_create_book',db_create_new_book_stop_time-db_create_new_book_start_time)
-
+logger.info("Book posted successfully.")
 const _book = await bookbyid.findBybookid(book.id)
 
 res.status(201).send(_book);

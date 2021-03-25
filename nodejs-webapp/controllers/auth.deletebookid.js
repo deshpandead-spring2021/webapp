@@ -17,6 +17,7 @@ const { cli } = require("winston/lib/winston/config");
 
 exports.deletebook = async (req, res) => {
 
+  logger.info("Delete book api called.")
   var delete_book_byid_start_time=Date.now()
   client.increment('counter_deletebook')
 
@@ -167,6 +168,7 @@ else{
     var delete_book_byid_start_time=Date.now()
     client.timing('timings_delete_bookbyid',delete_book_byid_start_time-delete_book_byid_start_time)
     client.timing('timing_db_delete_boook',db_delte_book_stop_time-db_delte_book_start_time)
+    logger.warn("Bad request user does not have authority")
     res.status(401).json("Error make sure that you have authority to perform this action.")
 }
 

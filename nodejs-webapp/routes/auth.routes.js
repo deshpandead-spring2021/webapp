@@ -115,7 +115,7 @@ allbooks.getallbooks
 //Post a new image for a book
 
 app.post("/books/:book_id/image",[tokenauth.basictokenauthentication],async function (req, res, next){
-
+logger.info("Post image for an api.")
   var post_image_start_time= Date.now()
   client.increment('counter_post_new_image')
 
@@ -160,6 +160,7 @@ const userinfo= await User.findOne({
     }
 
     else{
+      logger.warn("Bad request error while fetching data.")
       console.log("Error here in fetching user data>>>>>")
         res.status(400).json("Error while fetching user data. Please check if the user is registered for posting new book");
     }
@@ -181,18 +182,20 @@ const userinfo= await User.findOne({
     }
 
     else{
+      logger.warn("Bad request")
       console.log("Error here in fetching user data>>>>>")
         res.status(404).json("Error while fetching book. Please check if the book is posted.");
     }
     
   });
 
-  console.log("Printing existing userid>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+bookinfo.user_id)
-  console.log("Printing new userid >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+ userinfo.id)
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-  console.log((req.file));
+  // console.log("Printing existing userid>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+bookinfo.user_id)
+  // console.log("Printing new userid >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+ userinfo.id)
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  // console.log((req.file));
 
   if(req.file== undefined){
+    logger.warn("Bad request")
     res.status(400).send("Bad request. the key name of file should be 'file'")
   }
 
@@ -208,6 +211,7 @@ const userinfo= await User.findOne({
        bookId:bookidfromparam
     })  
     .catch(err=>{
+      logger.warn("Bad request, the userid do not match.")
       res.status(401).send({message :err.message })
     })
   
@@ -215,7 +219,7 @@ const userinfo= await User.findOne({
     sleep(100);
      _file =await filebyid.findByFileid(file.file_id)
      console.log(_file)
-  
+  logger.info("File sent successfully.")
     res.status(201).send(_file);
 
   }
@@ -224,6 +228,7 @@ const userinfo= await User.findOne({
   else{
     var post_image_stop_time= Date.now()
     client.timing('timing_post_image',post_image_stop_time-post_image_start_time)
+    logger.warn("This user does not have authority, bad request")
       res.status(401).json("Error make sure that you have authority to perform this action.")
   }
 
@@ -251,6 +256,7 @@ const uploadFile = () => {
       var s3_upload_image_stop_time= Date.now();
       client.timing('timing_s3_upload_time',s3_upload_image_stop_time-s3_upload_image_start_time)
          if (s3Err) {
+           logger.info("Data sent.")
            res.status(201).send(err)
           throw err
          }
@@ -260,6 +266,7 @@ const uploadFile = () => {
         var post_image_stop_time= Date.now()
         client.timing('timing_post_image',post_image_stop_time-post_image_start_time)
         client.timing('s3_upload_time',s3_upload_image_stop_time-s3_upload_image_start_time)
+        logger.info("File uploaded successfully.")
          console.log(`File uploaded successfully at ${data.Location}`)
      });
   });
@@ -275,7 +282,8 @@ uploadFile();
 
 
 app.delete("/books/:book_id/image/:image_id",[tokenauth.basictokenauthentication],async function (req, res, next){
-
+  logger.info("Delete image api called.")
+client.increment('counter_delete_image')
 var delete_image_start_time= Date.now()
 
 
@@ -303,6 +311,7 @@ var delete_image_start_time= Date.now()
       }
   
       else{
+        logger.warn("Bad request.")
         console.log("Error here in fetching user data>>>>>")
           res.status(400).json("Error while fetching user data. Please check if the user is registered for posting new book");
       }
@@ -325,6 +334,7 @@ var delete_image_start_time= Date.now()
       }
   
       else{
+        logger.warn("Bad request while fetching book data.")
         console.log("Error here in fetching user data>>>>>")
           res.status(404).json("Error while fetching book. Please check if the book is posted.");
       }
@@ -346,6 +356,7 @@ var delete_image_start_time= Date.now()
       }
   
       else{
+        logger.info("Bad request while fetching user data.")
         console.log("Error here in fetching file data>>>>>")
           res.status(404).json("Error while fetching file info. Please check if the file is posted.");
       }
@@ -388,6 +399,7 @@ var delete_image_start_time= Date.now()
     .then(file => {
       var db_delete_file_stop_time=Date.now();
       client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
+      logger.info("Image deleted successfully.")
             res.status(204).json("Image deleted successfully")
     })
       
@@ -396,6 +408,7 @@ var delete_image_start_time= Date.now()
         client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
         var delete_image_stop_time= Date.now()
         client.timing('timing_delete_image',delete_image_stop_time-delete_image_start_time)
+        logger.warn("bad request")
         res.status(401).send({message :err.message })
       })
       
@@ -406,6 +419,7 @@ var delete_image_start_time= Date.now()
       client.timing('timing_delete_file',db_delete_file_stop_time-db_delete_file_start_time)
       var delete_image_stop_time= Date.now()
       client.timing('timing_delete_image',delete_image_stop_time-delete_image_start_time)
+      logger.warn("Bad request user does not have authority to perform this action.")
       res.status(401).json("Error make sure that you have authority to perform this action.")
   }
 

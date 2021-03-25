@@ -22,6 +22,7 @@ exports.findByFileid = (file_id) => {
         var db_find_file_byid_stop_time = Date.now();
          console.log(">> Error while finding File: ", err);
          client.timing('timing_db_find_file_byid',db_find_file_byid_stop_time-db_find_file_byid_start_time)
+         logger.warn("bad request cannot fetch the file.")
          res.status(400).send("Cannot fetch the file. Make sure this book has file.")
       });
   };

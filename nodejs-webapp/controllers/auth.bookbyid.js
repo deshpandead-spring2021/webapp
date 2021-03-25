@@ -10,6 +10,7 @@ client = new SDC();
 
 
 exports.getbookid = async (req, res) => {
+    logger.info("Get book by user id api called.")
 
     var get_bookid_start_time= Date.now()
 
@@ -30,15 +31,16 @@ if(_book== undefined){
 var db_book_byid_stop_time=Date.now();
 
 client.timing('timing_db_book_byid',db_book_byid_stop_time-db_book_byid_start_time);
+    logger.warn("Bad request")
     res.status(404).send("There is no such book in the database")
 }
 
 else{
     var db_book_byid_stop_time=Date.now();
     var get_bookid_stop_time= Date.now();
-    client.timing('timing_getbook_byid',db_book_byid_stop_time-get_bookid_start_time)
-
+    client.timing('timing_getbook_byid',db_book_byid_stop_time-get_bookid_start_time);
     client.timing('timing_db_book_byid',db_book_byid_stop_time-db_book_byid_start_time);
+    logger.info("Book by id get request processed.")
     res.status(200).send(_book);
 }
 

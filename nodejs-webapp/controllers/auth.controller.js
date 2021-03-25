@@ -11,6 +11,7 @@ client = new SDC();
 
 
 exports.signup = async (req, res) => {
+  logger.info("User creation method called")
 
   var user_create_start_time =Date.now();
   var db_user_create_start_time= Date.now();
@@ -32,6 +33,7 @@ exports.signup = async (req, res) => {
     
     client.timing('timing_user_create', user_create_end_time - user_create_start_time );
     client.timing('timing_db_user_create',db_user_create_stop_time-db_user_create_start_time)
+    logger.warn("Bad request")
     res.status(400).send({message :err.message })
   })
   
