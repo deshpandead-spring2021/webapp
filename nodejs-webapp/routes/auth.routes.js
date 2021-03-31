@@ -107,7 +107,7 @@ deletebookid.deletebook
 
 
 //Get all the books from the database without authentication.
-app.get("/books",
+app.get("/mybooks",
 allbooks.getallbooks
 
 )
