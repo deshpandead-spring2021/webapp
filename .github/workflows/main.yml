@@ -65,8 +65,17 @@ jobs:
             ls -al
             aws configure list
             aws s3 cp webapp-${{github.run_number}}.zip s3://${{secrets.CODE_DEPLOY_S3_BUCKET}} --sse
-      - name: Make CodeDeploy API call
-        run: |
+      - name: CodeDeploy API Call
+        run: | 
             echo "Calling CodeDeploy Agent to pick the artifact and deploy on EC2 instance"
-            aws deploy create-deployment --application-name "csye6225-webapp" --deployment-group-name "csye6225-webapp-deployment" --s3-location bucket=${{secrets.CODE_DEPLOY_S3_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip --file-exists-behavior OVERWRITE
+            --application-name "csye6225-webapp" \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name "csye6225-webapp-deployment" \
+            --description " CodeDeploy Deployment" \
+            --output json \
+            --s3-location bucket=${{ secrets.S3_CODEDEPLOY_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip
+            --file-exists-behavior OVERWRITE
+            echo $output
+            dId=$(echo $output | jq -r '.deploymentId')
+            aws deploy wait deployment-successful --deployment-id $dId
             
