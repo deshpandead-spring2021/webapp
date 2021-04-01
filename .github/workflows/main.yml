@@ -74,7 +74,7 @@ jobs:
             --deployment-group-name "csye6225-webapp-deployment" \
             --description "CodeDeploy Deployment" \
             --output json \
-            --s3-location bucket=${{secrets.CODE_DEPLOY_S3_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip
+            --s3-location bucket=${{secrets.CODE_DEPLOY_S3_BUCKET}},bundleType=zip,key=webapp-${{github.run_number}}.zip)
             echo $output
             dId=$(echo $output | jq -r '.deploymentId')
             aws deploy wait deployment-successful --deployment-id $dId
