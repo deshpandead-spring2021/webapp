@@ -8,9 +8,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 const logger = require('../config/logger')
 var SDC = require('statsd-client');
 client = new SDC();
-
-
 var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({region: 'us-east-1'});
 const { json } = require("express/lib/response");
 const { cli } = require("winston/lib/winston/config");
 
@@ -55,6 +55,8 @@ exports.deletebook = async (req, res) => {
   
     
     var db_find_book_start_time= Date.now()
+
+
     const bookinfo= await Book.findOne({
       where: {
         id: bookidfromparam
@@ -145,6 +147,31 @@ else{
     client.timing('timing_db_delete_boook',db_delte_book_stop_time-db_delte_book_start_time)
  
     logger.info("Book deleted successfully")
+
+    var sns_params= {
+      Message: '', /* required */
+      TopicArn: process.env.SNS_TOPIC
+    }
+    
+    var message = {
+      email_address: loginname,
+      bookid: bookidfromparam,
+    };
+
+    console.log(message)
+    sns_params.Message= JSON.stringify(message);
+
+    var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(sns_params).promise();
+
+    publishTextPromise.then(
+      function(data) {
+      console.log(`Message ${sns_params.Message} sent to the topic ${sns_params.TopicArn}`);
+      console.log("MessageID is " + data.MessageId);
+      }).catch(
+      function(err) {
+      console.error(err, err.stack);
+      });
+      
 
       res.status(204).json("Book deleted successfully")
   
