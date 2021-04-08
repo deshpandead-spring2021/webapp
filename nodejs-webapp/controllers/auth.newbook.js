@@ -6,8 +6,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 const logger = require('../config/logger')
 var SDC = require('statsd-client');
 client = new SDC();
-
-
+var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({region: 'us-east-1'});
 
 exports.postbook = async (req, res) => {
   logger.info("Posting a new book api called.")
@@ -50,8 +51,6 @@ const userinfo= await User.findOne({
   });
 
 
-
-
   // Save Book to Database
 
   var db_create_new_book_start_time= Date.now();
@@ -86,5 +85,36 @@ logger.info("Book posted successfully.")
 const _book = await bookbyid.findBybookid(book.id)
 
 res.status(201).send(_book);
+
+var sns_params= {
+  Message: '', /* required */
+  TopicArn: process.env.SNS_TOPIC
+}
+
+var message = {
+  email_address: loginname,
+  bookid: _book.id,
+  title:_book.title,
+  author:_book.author,
+  isbn:_book.isbn,
+  link: `http://prod.adityadeshpande.me/books/${_book.id}`
+};
+
+console.log(message)
+sns_params.Message= JSON.stringify(message);
+
+var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(sns_params).promise();
+
+
+// Handle promise's fulfilled/rejected states
+publishTextPromise.then(
+function(data) {
+console.log(`Message ${sns_params.Message} sent to the topic ${sns_params.TopicArn}`);
+console.log("MessageID is " + data.MessageId);
+}).catch(
+function(err) {
+console.error(err, err.stack);
+});
+
 
 };

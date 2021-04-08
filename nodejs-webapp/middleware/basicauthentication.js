@@ -6,6 +6,7 @@ var StatsD = require('node-statsd'),
 client = new StatsD();
 
 
+
 basictokenauthentication = (req, res, next) => {
     
   client.increment('counter_get_user_data')
@@ -21,6 +22,7 @@ basictokenauthentication = (req, res, next) => {
 const base64Credentials =  req.headers.authorization.split(' ')[1];
 const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
 const [loginname, userpassword] = credentials.split(':');
+// username = loginname
 // console.log("loginname "+loginname)
 // console.log("userpassword "+userpassword)
 
