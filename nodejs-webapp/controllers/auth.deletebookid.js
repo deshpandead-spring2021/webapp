@@ -149,13 +149,18 @@ else{
     logger.info("Book deleted successfully")
 
     var sns_params= {
-      Message: '', /* required */
+      Message: 'Book has been deleted', /* required */
       TopicArn: process.env.SNS_TOPIC
     }
     
     var message = {
       email_address: loginname,
-      bookid: bookidfromparam,
+      bookid: bookidfromparam, 
+      title:na,
+      author:na,
+      isbn:na,
+      link:na
+      
     };
 
     console.log(message)
