@@ -156,10 +156,10 @@ else{
     var message = {
       email_address: loginname,
       bookid: bookidfromparam, 
-      title:na,
-      author:na,
-      isbn:na,
-      link:na
+      title:"na",
+      author:"na",
+      isbn:"na",
+      link:"na"
       
     };
 
