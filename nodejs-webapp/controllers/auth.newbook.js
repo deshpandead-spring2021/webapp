@@ -97,7 +97,7 @@ var message = {
   title:_book.title,
   author:_book.author,
   isbn:_book.isbn,
-  link: `http://prod.adityadeshpande.me/books/${_book.id}`
+  link: `https://prod.adityadeshpande.me/books/${_book.id}`
 };
 
 console.log(message)
