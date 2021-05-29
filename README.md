@@ -1,27 +1,112 @@
-## This is a nodejs application built as a part of Assignment 1 and 2 for CSYE6225 Spring 20201 course. 
+# AWS (CSYE 6225)
 
-The application currently signs up a user using basic token authentication, user can signup and change his/her details after signing up.Also, application posts a new book with fields like title, author, published date and ISBN number which is an unique field. Books can only be posted if a user is an authenticated user. A book can be deleted as well but by the same user who has posted it and not by any other user. There are also two seperate API's to get book information from books's uuid. Also, there is a seperate API to get all the books that have already been posted. 
+---------------------------------------------------------------
 
-An option to add image files also has been added to the application. Only the user who has posted the book will be able to add an image file for that book. The file image will be saved in Amazon S3.
+### Summary
 
-## Following are the prerequisites for building and deploying application locally.
+This is a web application Library Information Management System built with NodeJS and Sequelize ORM with MySQL as database.
 
-1) npm and nodejs should be installed on the machine that you need to run the application on. Also the machine should have MYSQL database installed.
-2) npm install
-3) npm install dotenv
-4) npm install mysql
+-   EC2 instances are built on a custom
+    [AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
+    using [packer](https://packer.io/)
+-   Setting up the network and creation of resources is automated with
+    Terraform, aws cli and shell scripts
+-   Instances are autoscaled with
+    [ELB](https://aws.amazon.com/elasticloadbalancing/) to handle the
+    web traffic
+-   Created a [serverless](https://aws.amazon.com/lambda/) application
+    to facilitate "book add and book delete email" using
+    [SES](https://aws.amazon.com/ses/) and
+    [SNS](https://aws.amazon.com/sns/)
+-   The application is deployed with GitHub Actions and AWS Code Deploy
 
-## Build and Deploy instructions for web application
+### Architecture Diagram
 
-Make sure your application is connected to the MYSQL database and then move to nodejs-webapp folder and run the command "node server.js". This command will start your application on port 8080.  
+ ![aws_full](https://user-images.githubusercontent.com/42703011/92800898-211c7580-f383-11ea-9b4e-76c171fca750.png)
 
-## Testing 
 
-A simple mocha test written as a part of assignment, which send a GET request to the application and checks if it recieves a HTTP 200 status. The command to run test is 
-mocha apptest.js
+Tools and Technologies
+----------------------
+                          
+| Infrastructure       | VPC, ELB, EC2, Route53, Cloud formation, Shell, Packer |
+|----------------------|--------------------------------------------------------|
+| Webapp               | JavaScript, NodeJS, Express, MySQL, Sequelize          |
+| CI/CD                | GitHub Actions, AWS Code Deploy                        |
+| Alerting and logging | statsd, CloudWatch, SNS, SES, Lambda                   |
+| Security             | Security Groups, IAM,WAF                               |
 
-cHANGE is here.
-also ghere 
-also gere
 
-Chnaging readem
+Infrastructure-setup
+--------------------
+
+-   Create the networking setup using Terraform
+-   Create the required IAM policies and users
+-   Setup Load Balancers, Route53, DynamoDB, SNS, SES, RDS
+
+Webapp
+------
+
+-   The Library Information Management System Web application is developed using
+    NodeJS Express framework that uses the REST architecture
+-   Secured the application with [Basic Authentication Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
+    to retrieve user information
+-   Created NPM dependencies to run the app locally and when deployed on
+    AWS
+-   Storing the images of books in S3
+
+## Build Instructions
+Pre-Requisites: Need to have postman installed
+-  Install Node [NodeJS](https://nodejs.org/en/download/) if not already installed in the local machine
+-  Clone this repository  into the local system 
+-  Go to the folder /webapp
+-  Download all npm dependencies by running "npm install" 
+-  Run Webapp Application by typing **`*node server.js*`** 
+
+
+## Running Tests
+- Used mocha framework and junit for load testing test case.
+- Run WebappApplication test cases:  `***node apptest.js***`
+
+
+CI/CD
+-----
+-   Created yml files in workflows folder for GitHub actions. 
+-   Bootstrapped the docker container in GitHub Actions to run the unit tests,
+    integration tests and generate the artifact
+-   The artifact generated is stored S3 bucket and deployed to an
+    autoscaling group. ![ci-cd](https://user-images.githubusercontent.com/42703011/92802596-a7858700-f384-11ea-89db-85f0f8de8bc7.png)
+
+
+Auto scaling groups
+-------------------
+
+-   Created auto scaling groups to scale to the application to handle
+    the webtraffic and keep the costs low when traffic is low
+-   Created cloud watch alarms to scale up and scale down the EC2
+    instances
+
+Serverless computing
+--------------------
+
+-   Created a pub/sub system with SNS and lambda function
+-   When the user request for a list of url to view added or deleted books within span of "c" days, send message is published to the SNS topic.
+-   The lambda function checks for the entry of the emails in DynamoDB if
+    it has no entry then it inserts a record with a TTL of 15 minutes
+    and sends the notification to the user with SES ![alt
+    text]![lambda](https://user-images.githubusercontent.com/42703011/92802718-c126ce80-f384-11ea-843f-a06d1267bdd9.png)
+
+
+[Packer](https://packer.io/)
+----------------------------
+
+-   Implemented CI to build out an AMI and share it between organization
+    on AWS
+-   Created provisioners and bootstrapped the EC2 instance with required
+    tools like NodeJS, Terraform  
+    
+    
+## Team Information
+
+| Name | NEU ID | Email Address |
+| --- | --- | --- |
+| ADITYA DESHPANDE| 001306705 |@northeastern.edu|
