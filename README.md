@@ -109,4 +109,4 @@ Serverless computing
 
 | Name | NEU ID | Email Address |
 | --- | --- | --- |
-| ADITYA DESHPANDE| 001306705 |@northeastern.edu|
+| ADITYA DESHPANDE| 001306705 |deshpande.ad@northeastern.edu|
