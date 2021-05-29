@@ -74,7 +74,7 @@ CI/CD
 -   Bootstrapped the docker container in GitHub Actions to run the unit tests,
     integration tests and generate the artifact
 -   The artifact generated is stored S3 bucket and deployed to an
-    autoscaling group. ![ci-cd](https://user-images.githubusercontent.com/42703011/92802596-a7858700-f384-11ea-89db-85f0f8de8bc7.png)
+    autoscaling group. ![CI_CD](https://user-images.githubusercontent.com/57328664/120083672-56473000-c098-11eb-8235-d03d70dea7ae.jpeg)
 
 
 Auto scaling groups
