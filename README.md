@@ -102,8 +102,7 @@ Serverless computing
 -   Implemented CI to build out an AMI and share it between organization
     on AWS
 -   Created provisioners and bootstrapped the EC2 instance with required
-    tools like NodeJS, Terraform  
-    
+    tools like NodeJS, Terraform 
     
 ## Team Information
 
